@@ -544,3 +544,29 @@ export async function exportVouchersCSV() {
 
   return csvHeader + csvData
 }
+// Add these at the end of lib/db.ts
+
+export async function getNotifications() {
+  // This should map to your system alerts for now
+  return await getSystemAlerts()
+}
+
+export async function getActiveUsers() {
+  const stats = await getDashboardStats()
+  return stats.activeUsers
+}
+
+export async function getDailyEarnings() {
+  const stats = await getDashboardStats()
+  return stats.dailyEarnings
+}
+
+export async function getMonthlyEarnings() {
+  const stats = await getDashboardStats()
+  return stats.monthlyEarnings
+}
+
+export async function getTotalVouchers() {
+  const stats = await getDashboardStats()
+  return stats.totalVouchers
+}
