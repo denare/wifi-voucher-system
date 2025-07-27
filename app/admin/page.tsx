@@ -799,82 +799,79 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
 
-                <div className="rounded-lg border overflow-hidden">
-                  <Table>
-                    <TableHeader className="bg-muted/50">
-                      <TableRow>
-                        <TableHead className="font-semibold">User</TableHead>
-                        <TableHead className="font-semibold">Status</TableHead>
-                        <TableHead className="font-semibold">Data Used</TableHead>
-                        <TableHead className="font-semibold">Last Login</TableHead>
-                        <TableHead className="font-semibold">Joined</TableHead>
-                        <TableHead className="text-right font-semibold">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {paginateData(filteredUsers, currentPage).map((user) => (
-                        <TableRow key={user.id} className="hover:bg-muted/50 transition-colors">
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {paginateData(filteredUsers, currentPage).map((user) => (
-                        <TableRow key={user.id} className="hover:bg-muted/50 transition-colors">
-                          <TableCell>
-                            <div className="flex items-center space-x-3">
-                              <Avatar className="h-10 w-10">
-                                <AvatarFallback className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold">
-                                  {getInitials(user.full_name)}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className="font-medium text-foreground">{user.full_name}</p>
-                                <p className="text-sm text-muted-foreground">{user.email}</p>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>{getStatusBadge(user.status)}</TableCell>
-                          <TableCell>
-                            <span className="font-medium">{formatDataSize(user.data_used_mb)}</span>
-                          </TableCell>
-                          <TableCell>{user.last_login ? formatDate(user.last_login) : "Never"}</TableCell>
-                          <TableCell>{formatDate(user.created_at)}</TableCell>
-                          <TableCell className="text-right">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem>
-                                  <Eye className="h-4 w-4 mr-2" />
-                                  View Details
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <Edit className="h-4 w-4 mr-2" />
-                                  Edit User
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <MessageSquare className="h-4 w-4 mr-2" />
-                                  Send Message
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                  <UserX className="h-4 w-4 mr-2" />
-                                  Suspend User
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="text-destructive">
-                                  <Trash2 className="h-4 w-4 mr-2" />
-                                  Delete User
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+          <div className="rounded-lg border overflow-hidden">
+  <Table>
+    <TableHeader className="bg-muted/50">
+      <TableRow>
+        <TableHead className="font-semibold">User</TableHead>
+        <TableHead className="font-semibold">Status</TableHead>
+        <TableHead className="font-semibold">Data Used</TableHead>
+        <TableHead className="font-semibold">Last Login</TableHead>
+        <TableHead className="font-semibold">Joined</TableHead>
+        <TableHead className="text-right font-semibold">Actions</TableHead>
+      </TableRow>
+    </TableHeader>
+
+    <TableBody>
+      {paginateData(filteredUsers, currentPage).map((user) => (
+        <TableRow key={user.id} className="hover:bg-muted/50 transition-colors">
+          <TableCell>
+            <div className="flex items-center space-x-3">
+              <Avatar className="h-10 w-10">
+                <AvatarFallback className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold">
+                  {getInitials(user.full_name)}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="font-medium text-foreground">{user.full_name}</p>
+                <p className="text-sm text-muted-foreground">{user.email}</p>
+              </div>
+            </div>
+          </TableCell>
+          <TableCell>{getStatusBadge(user.status)}</TableCell>
+          <TableCell>
+            <span className="font-medium">{formatDataSize(user.data_used_mb)}</span>
+          </TableCell>
+          <TableCell>{user.last_login ? formatDate(user.last_login) : "Never"}</TableCell>
+          <TableCell>{formatDate(user.created_at)}</TableCell>
+          <TableCell className="text-right">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <Eye className="h-4 w-4 mr-2" />
+                  View Details
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit User
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Send Message
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <UserX className="h-4 w-4 mr-2" />
+                  Suspend User
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive">
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete User
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+</div>
+
 
                 {/* Pagination */}
                 <div className="flex items-center justify-between mt-4">
