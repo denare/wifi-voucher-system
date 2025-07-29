@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyToken, generateVoucherCode } from "@/lib/auth"
-import { createVoucher, getVoucherPlans } from "@/lib/db"
+import { createVoucher, getVoucherPlans } from "@/lib/server-db"
 import { processPayment } from "@/lib/payment"
 
 export async function POST(request: NextRequest) {

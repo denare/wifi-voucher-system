@@ -33,7 +33,7 @@ import {
   Pie,
   Cell,
 } from "recharts"
-import { formatCurrency } from "@/lib/db"
+import { formatCurrency } from "@/lib/currency"
 import {
   BarChart3,
   Users,
@@ -464,9 +464,7 @@ export default function AdminDashboard() {
                 <Wifi className="h-7 w-7 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">
-                  WiFi Business Hub
-                </h1>
+                <h1 className="text-2xl font-bold text-foreground">WiFi Business Hub</h1>
                 <p className="text-sm text-muted-foreground">Professional WiFi Management System</p>
               </div>
             </div>
@@ -673,10 +671,12 @@ export default function AdminDashboard() {
                   {activityFeed.slice(0, 8).map((activity) => (
                     <div key={activity.id} className="flex items-start space-x-3 p-2 hover:bg-muted/50 rounded-lg">
                       <div className="flex-shrink-0 mt-1">
-                        {activity.activity_type === 'login' && <Users className="h-4 w-4 text-blue-500" />}
-                        {activity.activity_type === 'purchase' && <CreditCard className="h-4 w-4 text-green-500" />}
-                        {activity.activity_type === 'usage_alert' && <AlertTriangle className="h-4 w-4 text-orange-500" />}
-                        {activity.activity_type === 'connection' && <Wifi className="h-4 w-4 text-purple-500" />}
+                        {activity.activity_type === "login" && <Users className="h-4 w-4 text-blue-500" />}
+                        {activity.activity_type === "purchase" && <CreditCard className="h-4 w-4 text-green-500" />}
+                        {activity.activity_type === "usage_alert" && (
+                          <AlertTriangle className="h-4 w-4 text-orange-500" />
+                        )}
+                        {activity.activity_type === "connection" && <Wifi className="h-4 w-4 text-purple-500" />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground truncate">{activity.title}</p>
@@ -736,15 +736,24 @@ export default function AdminDashboard() {
                     <Plus className="h-6 w-6" />
                     <span className="text-sm">Create Voucher</span>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent">
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent"
+                  >
                     <Users className="h-6 w-6" />
                     <span className="text-sm">Manage Users</span>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent">
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent"
+                  >
                     <Server className="h-6 w-6" />
                     <span className="text-sm">System Status</span>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent">
+                  <Button
+                    variant="outline"
+                    className="h-20 flex flex-col items-center justify-center space-y-2 bg-transparent"
+                  >
                     <Download className="h-6 w-6" />
                     <span className="text-sm">Generate Report</span>
                   </Button>
@@ -799,79 +808,77 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
 
-          <div className="rounded-lg border overflow-hidden">
-  <Table>
-    <TableHeader className="bg-muted/50">
-      <TableRow>
-        <TableHead className="font-semibold">User</TableHead>
-        <TableHead className="font-semibold">Status</TableHead>
-        <TableHead className="font-semibold">Data Used</TableHead>
-        <TableHead className="font-semibold">Last Login</TableHead>
-        <TableHead className="font-semibold">Joined</TableHead>
-        <TableHead className="text-right font-semibold">Actions</TableHead>
-      </TableRow>
-    </TableHeader>
-
-    <TableBody>
-      {paginateData(filteredUsers, currentPage).map((user) => (
-        <TableRow key={user.id} className="hover:bg-muted/50 transition-colors">
-          <TableCell>
-            <div className="flex items-center space-x-3">
-              <Avatar className="h-10 w-10">
-                <AvatarFallback className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold">
-                  {getInitials(user.full_name)}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-medium text-foreground">{user.full_name}</p>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
-              </div>
-            </div>
-          </TableCell>
-          <TableCell>{getStatusBadge(user.status)}</TableCell>
-          <TableCell>
-            <span className="font-medium">{formatDataSize(user.data_used_mb)}</span>
-          </TableCell>
-          <TableCell>{user.last_login ? formatDate(user.last_login) : "Never"}</TableCell>
-          <TableCell>{formatDate(user.created_at)}</TableCell>
-          <TableCell className="text-right">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Eye className="h-4 w-4 mr-2" />
-                  View Details
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit User
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Send Message
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <UserX className="h-4 w-4 mr-2" />
-                  Suspend User
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive">
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete User
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-</div>
-
+                <div className="rounded-lg border overflow-hidden">
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        <TableHead className="font-semibold">User</TableHead>
+                        <TableHead className="font-semibold">Status</TableHead>
+                        <TableHead className="font-semibold">Data Used</TableHead>
+                        <TableHead className="font-semibold">Last Login</TableHead>
+                        <TableHead className="font-semibold">Joined</TableHead>
+                        <TableHead className="text-right font-semibold">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginateData(filteredUsers, currentPage).map((user) => (
+                        <TableRow key={user.id} className="hover:bg-muted/50 transition-colors">
+                          <TableCell>
+                            <div className="flex items-center space-x-3">
+                              <Avatar className="h-10 w-10">
+                                <AvatarFallback className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold">
+                                  {getInitials(user.full_name)}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-medium text-foreground">{user.full_name}</p>
+                                <p className="text-sm text-muted-foreground">{user.email}</p>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>{getStatusBadge(user.status)}</TableCell>
+                          <TableCell>
+                            <span className="font-medium">{formatDataSize(user.data_used_mb)}</span>
+                          </TableCell>
+                          <TableCell>{user.last_login ? formatDate(user.last_login) : "Never"}</TableCell>
+                          <TableCell>{formatDate(user.created_at)}</TableCell>
+                          <TableCell className="text-right">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem>
+                                  <Eye className="h-4 w-4 mr-2" />
+                                  View Details
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Edit User
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <MessageSquare className="h-4 w-4 mr-2" />
+                                  Send Message
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                  <UserX className="h-4 w-4 mr-2" />
+                                  Suspend User
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="text-destructive">
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete User
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
 
                 {/* Pagination */}
                 <div className="flex items-center justify-between mt-4">
@@ -1160,9 +1167,7 @@ export default function AdminDashboard() {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <code className="bg-muted px-2 py-1 rounded text-sm font-mono">
-                              {session.ip_address}
-                            </code>
+                            <code className="bg-muted px-2 py-1 rounded text-sm font-mono">{session.ip_address}</code>
                           </TableCell>
                           <TableCell>
                             <span className="font-medium text-sm">{session.plan_name}</span>
@@ -1360,12 +1365,12 @@ export default function AdminDashboard() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       {paymentMethodsChartData.map((method) => (
-                        <div key={method.method} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                        <div
+                          key={method.method}
+                          className="flex items-center justify-between p-4 bg-muted/30 rounded-lg"
+                        >
                           <div className="flex items-center space-x-3">
-                            <div 
-                              className="w-4 h-4 rounded-full" 
-                              style={{ backgroundColor: method.color }}
-                            ></div>
+                            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: method.color }}></div>
                             <span className="font-medium">{method.method}</span>
                           </div>
                           <span className="font-bold text-primary">{formatCurrency(method.amount)}</span>
@@ -1373,10 +1378,7 @@ export default function AdminDashboard() {
                       ))}
                     </div>
                     <div className="flex items-center justify-center">
-                      <ChartContainer
-                        config={{}}
-                        className="h-[250px] w-[250px]"
-                      >
+                      <ChartContainer config={{}} className="h-[250px] w-[250px]">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie
@@ -1417,9 +1419,9 @@ export default function AdminDashboard() {
                       <span className="text-2xl font-bold text-primary">850GB / 1000GB</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-4">
-                      <div 
+                      <div
                         className="bg-gradient-to-r from-primary to-primary/80 h-4 rounded-full transition-all duration-300"
-                        style={{ width: '85%' }}
+                        style={{ width: "85%" }}
                       ></div>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">

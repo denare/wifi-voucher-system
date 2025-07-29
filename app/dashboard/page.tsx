@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Wifi, ShoppingCart, Activity, Clock, Database, LogOut } from "lucide-react"
+import { formatCurrency } from "@/lib/currency"
 
 interface User {
   id: number
@@ -207,7 +208,7 @@ export default function DashboardPage() {
                         </div>
                         <div className="text-right">
                           <Badge className={getStatusColor(voucher.status)}>{voucher.status}</Badge>
-                          <p className="text-sm text-gray-600 mt-1">${voucher.price.toFixed(2)}</p>
+                          <p className="text-sm text-gray-600 mt-1">{formatCurrency(voucher.price)}</p>
                         </div>
                       </div>
                     ))}

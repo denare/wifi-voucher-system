@@ -1,14 +1,19 @@
-import { supabaseAdmin } from "./supabaseAdmin"
+// lib/server-db.ts (Server-side Supabase client and DB functions)
+import { createClient } from "@supabase/supabase-js"
 
-// Currency formatter for Tanzanian Shillings
-export const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("sw-TZ", {
-    style: "currency",
-    currency: "TZS",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  throw new Error('Supabase URL and Service Role Key are required in environment variables');
 }
+
+export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+  },
+})
 
 // User management functions
 export async function getUser(email: string) {
@@ -136,7 +141,7 @@ export async function getAllVouchers() {
     }
 
     return (
-      data?.map((voucher) => ({
+      data?.map((voucher: any) => ({
         ...voucher,
         plan_name: voucher.voucher_plans.name,
         data_limit_mb: voucher.voucher_plans.data_limit_mb,
@@ -168,7 +173,7 @@ export async function getUserVouchers(userId: string) {
     }
 
     return (
-      data?.map((voucher) => ({
+      data?.map((voucher: any) => ({
         ...voucher,
         plan_name: voucher.voucher_plans.name,
         data_limit_mb: voucher.voucher_plans.data_limit_mb,
@@ -203,7 +208,7 @@ export async function getActiveSessions() {
     }
 
     return (
-      data?.map((session) => ({
+      data?.map((session: any) => ({
         ...session,
         user_name: session.users.full_name,
         plan_name: session.vouchers.voucher_plans.name,
@@ -237,7 +242,7 @@ export async function getRecentTransactions() {
     }
 
     return (
-      data?.map((payment) => ({
+      data?.map((payment: any) => ({
         ...payment,
         user_name: payment.users.full_name,
         plan_name: payment.vouchers.voucher_plans.name,
@@ -415,8 +420,7 @@ export async function getTopPerformingVouchers() {
     const { data, error } = await supabaseAdmin
       .from("vouchers")
       .select(`
-        voucher_plans!inner(name, price),
-        count:id
+        voucher_plans!inner(name, price)
       `)
       .eq("status", "active")
 
@@ -543,30 +547,4 @@ export async function exportVouchersCSV() {
     .join("\n")
 
   return csvHeader + csvData
-}
-// Add these at the end of lib/db.ts
-
-export async function getNotifications() {
-  // This should map to your system alerts for now
-  return await getSystemAlerts()
-}
-
-export async function getActiveUsers() {
-  const stats = await getDashboardStats()
-  return stats.activeUsers
-}
-
-export async function getDailyEarnings() {
-  const stats = await getDashboardStats()
-  return stats.dailyEarnings
-}
-
-export async function getMonthlyEarnings() {
-  const stats = await getDashboardStats()
-  return stats.monthlyEarnings
-}
-
-export async function getTotalVouchers() {
-  const stats = await getDashboardStats()
-  return stats.totalVouchers
 }

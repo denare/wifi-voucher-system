@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyToken } from "@/lib/auth"
-import { getRecentTransactions } from "@/lib/db"
+import { getRecentTransactions } from "@/lib/server-db"
 
 export async function GET(request: NextRequest) {
   try {

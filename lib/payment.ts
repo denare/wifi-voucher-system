@@ -10,6 +10,7 @@ export interface PaymentResponse {
   success: boolean
   transactionId?: string
   message: string
+  currency?: string
 }
 
 export async function processPayment(request: PaymentRequest): Promise<PaymentResponse> {
@@ -24,11 +25,13 @@ export async function processPayment(request: PaymentRequest): Promise<PaymentRe
       success: true,
       transactionId: `TXN${Date.now()}`,
       message: "Payment processed successfully",
+      currency: "TZS",
     }
   } else {
     return {
       success: false,
       message: "Payment failed. Please try again.",
+      currency: "TZS",
     }
   }
 }

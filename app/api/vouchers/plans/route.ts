@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getVoucherPlans } from "@/lib/db"
+import { getVoucherPlans } from "@/lib/server-db"
 
 export async function GET() {
   try {

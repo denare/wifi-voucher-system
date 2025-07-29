@@ -12,6 +12,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, CreditCard, Smartphone, Wifi, Clock, Database } from "lucide-react"
+import { formatCurrency } from "@/lib/currency"
 
 interface VoucherPlan {
   id: number
@@ -71,7 +72,7 @@ export default function PurchasePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          planId: Number.parseInt(selectedPlan),
+          planId: selectedPlan,
           paymentMethod,
           phoneNumber: paymentMethod === "mpesa" ? phoneNumber : undefined,
         }),
@@ -141,7 +142,7 @@ export default function PurchasePage() {
                         <div className="border rounded-lg p-4 hover:bg-gray-50">
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="font-semibold">{plan.name}</h3>
-                            <Badge variant="secondary">${plan.price.toFixed(2)}</Badge>
+                            <Badge variant="secondary">{formatCurrency(plan.price)}</Badge>
                           </div>
                           <p className="text-sm text-gray-600 mb-3">{plan.description}</p>
                           <div className="flex space-x-4 text-sm">
@@ -257,7 +258,7 @@ export default function PurchasePage() {
                           </div>
                           <div className="flex justify-between font-semibold border-t pt-2 mt-2">
                             <span>Total:</span>
-                            <span>${plan.price.toFixed(2)}</span>
+                            <span>{formatCurrency(plan.price)}</span>
                           </div>
                         </div>
                       ) : null

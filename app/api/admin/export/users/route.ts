@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyToken } from "@/lib/auth"
-import { exportUsersCSV } from "@/lib/db"
+import { exportUsersCSV } from "@/lib/server-db"
 
 export async function GET(request: NextRequest) {
   try {

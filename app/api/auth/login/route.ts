@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getUser } from "@/lib/db"
 import { verifyPassword, generateToken } from "@/lib/auth"
+import { supabase } from "@/lib/supabase";
+
 
 export async function POST(request: NextRequest) {
   try {

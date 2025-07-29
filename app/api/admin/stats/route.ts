@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyToken } from "@/lib/auth"
-import { getActiveUsers, getDailyEarnings, getMonthlyEarnings, getTotalVouchers } from "@/lib/db"
+import { getDashboardStats } from "@/lib/server-db"
 
 export async function GET(request: NextRequest) {
   try {
@@ -22,18 +22,13 @@ export async function GET(request: NextRequest) {
     console.log("Fetching admin stats")
 
     // Get statistics
-    const [activeUsersResult, dailyEarningsResult, monthlyEarningsResult, totalVouchers] = await Promise.all([
-      getActiveUsers(),
-      getDailyEarnings(),
-      getMonthlyEarnings(),
-      getTotalVouchers(),
-    ])
+    const dashboardStats = await getDashboardStats()
 
     const stats = {
-      activeUsers: activeUsersResult[0]?.count || 0,
-      dailyEarnings: dailyEarningsResult[0]?.total || 0,
-      monthlyEarnings: monthlyEarningsResult[0]?.total || 0,
-      totalVouchers: totalVouchers || 0,
+      activeUsers: dashboardStats.activeUsers,
+      dailyEarnings: dashboardStats.dailyEarnings,
+      monthlyEarnings: dashboardStats.monthlyEarnings,
+      totalVouchers: dashboardStats.totalVouchers,
     }
 
     console.log("Stats fetched:", stats)
@@ -50,3 +45,4 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+  

@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyToken } from "@/lib/auth"
-import { getNotifications } from "@/lib/db"
+import { getSystemAlerts } from "@/lib/server-db"
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,12 +19,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: "Admin access required" }, { status: 403 })
     }
 
-    console.log("Fetching notifications")
-    const notifications = await getNotifications()
-    console.log("Notifications fetched:", notifications.length)
+    console.log("Fetching alerts")
+    const alerts = await getSystemAlerts()
+    console.log("Alerts fetched:", alerts.length)
 
     return NextResponse.json({
-      notifications,
+      alerts,
     })
   } catch (error) {
     console.error("Admin notifications error:", error)
